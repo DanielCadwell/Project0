@@ -1,0 +1,32 @@
+public class Helper {
+	    public static void updateAccount() {
+        List<Account> companies = new List<Account>();
+        for(Account a : [SELECT id, Acount_Standing__c, AccountBallance__c FROM Account]){
+            if(a.AccountBallance__c > 0){
+                a.Acount_Standing__c = 'Good';  
+            }
+            else if(a.AccountBallance__c <= 0 ){
+                a.Acount_Standing__c = 'overdrawn'; 
+            }
+            companies.add(a);
+        } 
+        database.update(companies);
+    }
+    
+        public static void newTransaction(String accName, decimal newmoney){
+        Account a = [Select Id, Name FROM Account WHERE Name = :accName];
+        Transaction t = new Transaction(Account_Transaction = a.id, Transaction_Typec = 'Loan', Transaction_Amountc = newmoney);
+        insert t;
+   }
+    
+        public static void updateBalance(String accName){
+        decimal total = 0;
+        Account a = [Select Id, Name FROM Account WHERE Name = :accName];
+        ID aid = a.Id;
+        for(Transactionc t: [SELECT Account_Transactionsc, Transaction_Amountc FROM Transactionc WHERE Account_Transactionsc = :aid]){
+           total += t.Transaction_Amountc;
+      	}
+        a.Total_Balancec = total;
+        update a;
+    }
+}
