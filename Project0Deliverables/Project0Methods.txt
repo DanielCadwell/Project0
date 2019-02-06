@@ -12,12 +12,12 @@ public class Project0 {
     
     
     public static Integer[] sortArray( Integer[] intList ) {
-    //Test case: Project0.sortArray( new List<Integer>{2,4,5,1,3,1} );
+    //Test case: Project0.sortArray( new List<Integer>{2,4,5,1,3,1} ); I had to use this test case
     
-	for(Integer i = 0 ; i < intList.size() ; i ++) {
+	for(Integer i = 0 ; i < intList.size() ; i ++) { //Get initial list size for outer and inner loop
 	for(integer j = i+1 ; j <= intList.size() -1 ; j ++ ){
 	  integer x = 0 ; // initiate my variable and start the sort through my if statement
-	  if(intList[i] >  intList[j]){
+	  if(intList[i] >  intList[j]){    // Begin the sort with sort logic
 	   x = intList[i]  ;
 	   intList[i] = intList[j]  ;
 	   intList[j]  = x;
@@ -26,71 +26,71 @@ public class Project0 {
 	}
   }
   system.debug(intList);
-  return intList;
+  return intList; //Return my results after sort
 }
 
-	public static Integer nFactorial( Integer n) {
+    public static Integer nFactorial( Integer n) {
 
     Integer ans = 1;
     if (n < 0) {
-        System.debug('No negative numbers');
+        System.debug('No negative numbers'); // Make sure no negitive numbers are entered
     }
     else
     {
-    for (Integer i = 1; i <= n; i++) {
+    for (Integer i = 1; i <= n; i++) {  // fatorial logic
         ans *= i;
     }
     System.debug(ans);    
   }
-  Return ans;      
+  Return ans;   //Return my results  
  
  }
     
        public static Integer[] rotateLeftNTimes( Integer[] Myarray, Integer n){
-        integer size = Myarray.size();
-        n = Math.mod(n, size);
+        integer size = Myarray.size(); // get initial size of the array
+        n = Math.mod(n, size);         // invoke the Math.mod
         for(Integer i = 0; i < n; i++){
-            Integer holder0 = Myarray[i];
-            Myarray[i] = Myarray[(i + 1)];
+            Integer holder0 = Myarray[i];  // create the holder so we can do the rotate
+            Myarray[i] = Myarray[(i + 1)];  // start Logic for the rotate
             for(integer j = size-1; j > i; j--){
                 integer mover = Myarray[j];
                 Myarray[j] = holder0;
                 holder0 = mover;
             }
         }
-        return Myarray;
+        return Myarray; Retun my results
     }
     
         public static Boolean bracketsAreBalanced(String s){
-        List<String> stringlist = s.split('');
+        List<String> stringlist = s.split('');  // create string list and split
         Integer i = 0;
-        if ( Math.mod(stringlist.size(), 2) == 1){
+        if ( Math.mod(stringlist.size(), 2) == 1){ // invoke Math.mod
             return False;
         }
-        while(i < s.length()){
+        while(i < s.length()){ // While loop to iniate my logic with an if/ if else structure
             string first = s.substring(0,1);
             string last = s.substring(s.length()- 1);
             s = s.substring(1,s.length()-1);
-            if(first == '[' && last == ']'){
+            if(first == '[' && last == ']'){  // check ballance for '['
                 bracketsAreBalanced(s);
             }
-            else if(first == '{' && last == '}'){
+            else if(first == '{' && last == '}'){ // check ballance for '{'
                 bracketsAreBalanced(s);
             }
-            else if(first == '(' && last == ')'){
+            else if(first == '(' && last == ')'){ // chech ballance for ')'
                 bracketsAreBalanced(s);
             }
             else{
-                return false;
+                return false;  //If no ballance is found return false
             }
         }
-        return true;
+        return true;  // if ballanced
     }
     
     public static void updateAccountSize() {
-        List<Account> companies = new List<Account>();
-        for(Account a : [SELECT id, size__c, NumberOfEmployees FROM Account]){
-            if(a.NumberOfEmployees >= 0 && a.NumberOfEmployees <= 1000){
+        List<Account> companies = new List<Account>();  //create list to hold my query results
+        for(Account a : [SELECT id, size__c, NumberOfEmployees FROM Account]){ // SOQL Query to get needed object and fields
+            if(a.NumberOfEmployees >= 0 && a.NumberOfEmployees <= 1000){  // start if else to determine size
                 a.size__c = 'Small';  
             }
             else if(a.NumberOfEmployees > 1000 && a.NumberOfEmployees <= 10000){
@@ -99,31 +99,31 @@ public class Project0 {
             else if(a.NumberOfEmployees > 10000){
                 a.size__c = 'Large';
             }
-           companies.add(a);
+           companies.add(a);  // Add results to list
         } 
-        database.update(companies);
+        database.update(companies); // update the database
     }
 
-	    public static void UpdateCALeads() {
-        List<Lead> companies = new List<Lead>();
-        for(Lead a : [SELECT id,State,Status FROM Lead]){
-            if(a.State == 'CA'){
-                a.Status = 'Closed - Not Converted';  
+	public static void UpdateCALeads() {
+        List<Lead> companies = new List<Lead>();  // create list to hold query results
+        for(Lead a : [SELECT id,State,Status FROM Lead]){  // SOQL query
+            if(a.State == 'CA'){  // Filter down results to records needed
+                a.Status = 'Closed - Not Converted';  // Change status as required
             }
-            companies.add(a);
+            companies.add(a);  // add results to list
         } 
-        database.update(companies);
+        database.update(companies);  //update database
     }
     
      public static void closePastDueOpportunities(){
-        List<Opportunity> OPsClosed = new List<Opportunity>();
-        for(Opportunity a:[SELECT Id, StageName, CloseDate FROM Opportunity WHERE StageName != 'Closed Won']){
-            if(a.CloseDate < date.today()){
-                    a.StageName = 'Closed Lost';
-                    OPsClosed.add(a);
+        List<Opportunity> OPsClosed = new List<Opportunity>(); //create list to hold query results
+        for(Opportunity a:[SELECT Id, StageName, CloseDate FROM Opportunity WHERE StageName != 'Closed Won']){ // SOQL query
+            if(a.CloseDate < date.today()){ // Filter records to the ones needed
+                    a.StageName = 'Closed Lost'; // If requirements meet change StageName
+                    OPsClosed.add(a);  // add results to list
             }
         }
-        update(OPsClosed);
+        update(OPsClosed); update List
     }
  
 }
