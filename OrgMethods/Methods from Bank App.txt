@@ -1,17 +1,19 @@
 public class Helper {
 	    public static void updateAccount() {
-        List<Account> companies = new List<Account>();
-        for(Account a : [SELECT id, Acount_Standing__c, AccountBallance__c FROM Account]){
-            if(a.AccountBallance__c > 0){
+        List<Account> companies = new List<Account>();  // creat list to hold query
+        for(Account a : [SELECT id, Acount_Standing__c, AccountBallance__c FROM Account]){ // SOQL query
+            if(a.AccountBallance__c > 0){  // filter accounts that are in negative ballance or positive ballance
                 a.Acount_Standing__c = 'Good';  
             }
             else if(a.AccountBallance__c <= 0 ){
-                a.Acount_Standing__c = 'overdrawn'; 
+                a.Acount_Standing__c = 'overdrawn'; // Change records that meet negative ballance requirement
             }
-            companies.add(a);
+            companies.add(a);  //update List
         } 
-        database.update(companies);
+        database.update(companies); //update database
     }
+    
+    // The following two methods are not saving in the developer counsel because of errors I need to still address
     
         public static void newTransaction(String accName, decimal newmoney){
         Account a = [Select Id, Name FROM Account WHERE Name = :accName];
